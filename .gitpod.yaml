@@ -1,0 +1,15 @@
+
+image: gitpod/workspace-rust
+
+tasks:
+  - name: build and run
+    init: |
+      rustup target add wasm32-wasi
+      curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -v 0.13.5  --plugins wasi_nn-ggml wasmedge_rustls
+      bash <(curl -sSfL 'https://raw.githubusercontent.com/LlamaEdge/LlamaEdge/main/run-llm.sh')
+    command: 
+  - name: test
+    openMode: tab-after
+    command: |
+      gp ports await 8080
+      curl localhost:8080
